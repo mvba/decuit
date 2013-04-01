@@ -37,12 +37,10 @@ namespace decuit.Tests.Integration
 			{
 				const string badOption = "Ontario";
 				var browserActions = UITestRunner.InitializeWorkFlowContainer(
-					b => b.Set(LabelText).To(badOption)
-					);
+					b => b.Set(LabelText).To(badOption));
 
 				var exception = Assert.Throws<ShouldBeTrueAssertionException>(() => new IntegrationTestRunner().Run(
 				                                                        	browserActions,
-				                                                        	SimpleWebServer.InitializeServerResponsesContainer(),
 				                                                        	PageName));
 
 				exception.Message.Contains(badOption).ShouldBeTrue();
@@ -58,7 +56,6 @@ namespace decuit.Tests.Integration
 
 				var exception = Assert.Throws<ShouldBeTrueAssertionException>(() => new IntegrationTestRunner().Run(
 				                                                        	browserActions,
-				                                                        	SimpleWebServer.InitializeServerResponsesContainer(),
 				                                                        	PageName));
 				exception.Message.Contains(textOfBadLabel).ShouldBeTrue();
 			}
@@ -73,7 +70,6 @@ namespace decuit.Tests.Integration
 
 				var exception = Assert.Throws<ShouldBeTrueAssertionException>(() => new IntegrationTestRunner().Run(
 				                                                        	browserActions,
-				                                                        	SimpleWebServer.InitializeServerResponsesContainer(),
 				                                                        	PageName));
 				exception.Message.Contains(textOfBadLabel).ShouldBeTrue();
 			}
@@ -88,7 +84,6 @@ namespace decuit.Tests.Integration
 
 				var exception = Assert.Throws<ShouldBeTrueAssertionException>(() => new IntegrationTestRunner().Run(
 				                                                        	browserActions,
-				                                                        	SimpleWebServer.InitializeServerResponsesContainer(),
 				                                                        	PageName));
 				exception.Message.Contains(textOfBadLabel).ShouldBeTrue();
 			}
@@ -103,7 +98,6 @@ namespace decuit.Tests.Integration
 
 				new IntegrationTestRunner().Run(
 					browserActions,
-					SimpleWebServer.InitializeServerResponsesContainer(),
 					PageName);
 			}
 
@@ -117,7 +111,6 @@ namespace decuit.Tests.Integration
 
 				new IntegrationTestRunner().Run(
 					browserActions,
-					SimpleWebServer.InitializeServerResponsesContainer(),
 					PageName);
 			}
 		}

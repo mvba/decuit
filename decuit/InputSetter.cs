@@ -14,18 +14,19 @@
 
 using System;
 using FluentWebUITesting.Extensions;
-using WatiN.Core;
+
+using OpenQA.Selenium;
 
 namespace gar3t.decuit
 {
 	public class TextBoxSetter : IInputSetter
 	{
-		public bool IsMatch(Browser browser, string id)
+		public bool IsMatch(IWebDriver browser, string id)
 		{
 			return browser.TextBoxWithId(id).Exists().IsTrue;
 		}
 
-		public void SetText(Browser browser, string id, string textToSet)
+		public void SetText(IWebDriver browser, string id, string textToSet)
 		{
 			browser.TextBoxWithId(id).Text().SetValueTo(textToSet);
 		}
@@ -33,18 +34,18 @@ namespace gar3t.decuit
 
 	public interface IInputSetter
 	{
-		bool IsMatch(Browser browser, string id);
-		void SetText(Browser browser, string id, string textToSet);
+		bool IsMatch(IWebDriver browser, string id);
+		void SetText(IWebDriver browser, string id, string textToSet);
 	}
 
 	public class DropDownListSetter : IInputSetter
 	{
-		public bool IsMatch(Browser browser, string id)
+		public bool IsMatch(IWebDriver browser, string id)
 		{
 			return browser.DropDownListWithId(id).Exists().IsTrue;
 		}
 
-		public void SetText(Browser browser, string id, string textToSet)
+		public void SetText(IWebDriver browser, string id, string textToSet)
 		{
 			var dropDown = browser.DropDownListWithId(id);
 			var option = dropDown.OptionWithText(textToSet);

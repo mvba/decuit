@@ -6,4 +6,4 @@ build/
 *.sln.cache
 _ReSharper.*/
 *.user
-
+dist.bat

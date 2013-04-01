@@ -14,44 +14,38 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.IO;
 
 using FluentWebUITesting;
 
-using gar3t.Common.Web;
+using OpenQA.Selenium;
 
-using WatiN.Core;
+
 
 namespace decuit.Tests.Integration
 {
 	public class IntegrationTestRunner
 	{
-		public void Run(IEnumerable<Action<Browser>> browserActions, IEnumerable<Action<HttpMessage, ISocketProxy>> webServerResponses, string initialPage)
+		public void Run(IEnumerable<Action<IWebDriver>> browserActions, string initialPage)
 		{
+			var baseUrl = new FileInfo(Path.Combine("Pages", initialPage)).FullName;
 			UITestRunner.InitializeBrowsers(x =>
 				{
 					x.CloseBrowserAfterEachTest = false;
 					x.UseInternetExplorer = false;
-					x.UseFireFox = true;
+					x.UseFireFox = false;
+					x.UseChrome = true;
+					x.BaseUrl = baseUrl;
 				});
 
-			var webServer = new SimpleWebServer(webServerResponses);
 			try
 			{
-				foreach (var step in webServerResponses)
-				{
-					webServer.Steps.Add(step);
-				}
-				var thread = new Thread(webServer.Run);
-				thread.Start();
-
-				UITestRunner.RunTest("http://localhost:" + SimpleWebServer.Port + "/" + initialPage,
+				UITestRunner.RunTest(baseUrl,
 				                     "",
 				                     browserActions);
 			}
 			finally
 			{
-				webServer.Stop();
 				try
 				{
 					UITestRunner.CloseBrowsers();

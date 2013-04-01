@@ -63,10 +63,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\garet.Common\gar3t.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Interop.SHDocVw, Version=1.1.0.0, Culture=neutral, PublicKeyToken=db7cfd3acb5ad44e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\WatiN\Interop.SHDocVw.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.5.3.9345, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\NUnit\nunit.framework.dll</HintPath>
@@ -83,26 +79,30 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WatiN.Core, Version=2.0.20.0, Culture=neutral, PublicKeyToken=db7cfd3acb5ad44e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\WatiN\WatiN.Core.dll</HintPath>
+    <Reference Include="WebDriver">
+      <HintPath>..\lib\FluentWebUITesting\WebDriver.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SetTests_CheckBox.cs" />
     <Compile Include="SetTests_DropDownList.cs" />
     <Compile Include="InsufficientHttpMessageHandlingStepsException.cs" />
-    <EmbeddedResource Include="Pages\SetTextBox.html" />
+    <Content Include="Pages\SetTextBox.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="IntegrationTestRunner.cs" />
     <Compile Include="SetTests_TextBox.cs" />
-    <Compile Include="SimpleWebServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages\SetDropDownList.html" />
+    <Content Include="Pages\SetDropDownList.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages\SetCheckBox.html" />
+    <Content Include="Pages\SetCheckBox.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -128,6 +128,14 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if not exist "$(TargetDir)\chromedriver.exe" goto cp
+   del /F "$(TargetDir)\chromedriver.exe"
+:cp
+if exist "$(TargetDir)\chromedriver.exe" goto end
+   copy /Y "$(ProjectDir)..\lib\FluentWebUITesting\chromedriver.exe"  "$(TargetDir)"
+:end</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

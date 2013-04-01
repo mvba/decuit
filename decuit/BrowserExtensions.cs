@@ -11,13 +11,14 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-using WatiN.Core;
+
+using OpenQA.Selenium;
 
 namespace gar3t.decuit
 {
 	public static class BrowserExtensions
 	{
-		public static SetExpression Set(this Browser b, string labelText)
+		public static SetExpression Set(this IWebDriver b, string labelText)
 		{
 			return new SetExpression(b, labelText);
 		}

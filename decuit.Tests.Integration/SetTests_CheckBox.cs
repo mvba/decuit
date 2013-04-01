@@ -12,10 +12,14 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using System.IO;
+
 using FluentAssert;
 using FluentAssert.Exceptions;
 using FluentWebUITesting;
 using FluentWebUITesting.Extensions;
+
+using OpenQA.Selenium.Chrome;
 
 using gar3t.decuit;
 
@@ -40,7 +44,6 @@ namespace decuit.Tests.Integration
 
 				var exception = Assert.Throws<ShouldBeTrueAssertionException>(() => new IntegrationTestRunner().Run(
 				                                                        	browserActions,
-				                                                        	SimpleWebServer.InitializeServerResponsesContainer(),
 				                                                        	PageName));
 				exception.Message.Contains(textOfBadLabel).ShouldBeTrue();
 			}
@@ -55,7 +58,6 @@ namespace decuit.Tests.Integration
 
 				var exception = Assert.Throws<ShouldBeTrueAssertionException>(() => new IntegrationTestRunner().Run(
 				                                                        	browserActions,
-				                                                        	SimpleWebServer.InitializeServerResponsesContainer(),
 				                                                        	PageName));
 				exception.Message.Contains(textOfBadLabel).ShouldBeTrue();
 			}
@@ -70,7 +72,6 @@ namespace decuit.Tests.Integration
 
 				var exception = Assert.Throws<ShouldBeTrueAssertionException>(() => new IntegrationTestRunner().Run(
 				                                                        	browserActions,
-				                                                        	SimpleWebServer.InitializeServerResponsesContainer(),
 				                                                        	PageName));
 				exception.Message.Contains(textOfBadLabel).ShouldBeTrue();
 			}
@@ -85,7 +86,6 @@ namespace decuit.Tests.Integration
 
 				new IntegrationTestRunner().Run(
 					browserActions,
-					SimpleWebServer.InitializeServerResponsesContainer(),
 					PageName);
 			}
 
@@ -99,7 +99,6 @@ namespace decuit.Tests.Integration
 
 				new IntegrationTestRunner().Run(
 					browserActions,
-					SimpleWebServer.InitializeServerResponsesContainer(),
 					PageName);
 			}
 		}
