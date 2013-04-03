@@ -11,56 +11,69 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-
 using System;
-using FluentWebUITesting.Extensions;
 
-using OpenQA.Selenium;
+using FluentWebUITesting.Controls;
 
 namespace gar3t.decuit
 {
 	public class TextBoxSetter : IInputSetter
 	{
-		public bool IsMatch(IWebDriver browser, string id)
+		public bool IsMatch(ControlWrapperBase control)
 		{
-			return browser.TextBoxWithId(id).Exists().IsTrue;
+			return control.Element != null && control.ToTextBoxWrapper().Element != null;
 		}
 
-		public void SetText(IWebDriver browser, string id, string textToSet)
+		public void SetTo(ControlWrapperBase control, string value)
 		{
-			browser.TextBoxWithId(id).Text().SetValueTo(textToSet);
+			var textbox = control.ToTextBoxWrapper();
+			textbox.Text().SetValueTo(value);
+		}
+	}
+
+	public class CheckBoxSetter : IInputSetter
+	{
+		public bool IsMatch(ControlWrapperBase control)
+		{
+			return control.Element != null && control.ToCheckBoxWrapper().Element != null;
+		}
+
+		public void SetTo(ControlWrapperBase control, string value)
+		{
+			var checkbox = control.ToCheckBoxWrapper();
+			checkbox.CheckedState().SetValueTo(CheckedState.GetFor(value).Value);
 		}
 	}
 
 	public interface IInputSetter
 	{
-		bool IsMatch(IWebDriver browser, string id);
-		void SetText(IWebDriver browser, string id, string textToSet);
+		bool IsMatch(ControlWrapperBase control);
+		void SetTo(ControlWrapperBase control, string value);
 	}
 
 	public class DropDownListSetter : IInputSetter
 	{
-		public bool IsMatch(IWebDriver browser, string id)
+		public bool IsMatch(ControlWrapperBase control)
 		{
-			return browser.DropDownListWithId(id).Exists().IsTrue;
+			return control.Element != null && control.ToDropDownListWrapper().Element != null;
 		}
 
-		public void SetText(IWebDriver browser, string id, string textToSet)
+		public void SetTo(ControlWrapperBase control, string value)
 		{
-			var dropDown = browser.DropDownListWithId(id);
-			var option = dropDown.OptionWithText(textToSet);
+			var dropDown = control.ToDropDownListWrapper();
+			var option = dropDown.OptionWithText(value);
 			if (option.Exists().IsTrue)
 			{
 				option.Select();
 				return;
 			}
-			option = dropDown.OptionWithValue(textToSet);
+			option = dropDown.OptionWithValue(value);
 			if (option.Exists().IsTrue)
 			{
 				option.Select();
 				return;
 			}
-			throw new AssertionException(String.Format("The drop down with id '{0}' does not have option '{1}'", id, textToSet));
+			throw new AssertionException(String.Format("{0} does not have option '{1}'", control.HowFound, value));
 		}
 	}
 }

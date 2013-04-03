@@ -12,14 +12,10 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-using System.IO;
-
 using FluentAssert;
 using FluentAssert.Exceptions;
 using FluentWebUITesting;
 using FluentWebUITesting.Extensions;
-
-using OpenQA.Selenium.Chrome;
 
 using gar3t.decuit;
 
@@ -27,7 +23,9 @@ using NUnit.Framework;
 
 namespace decuit.Tests.Integration
 {
+//// ReSharper disable ClassNeverInstantiated.Global
 	public partial class SetTests
+//// ReSharper restore ClassNeverInstantiated.Global
 	{
 		[TestFixture]
 		public class When_asked_to_Set_the_value_of_a_CheckBox
@@ -39,7 +37,7 @@ namespace decuit.Tests.Integration
 			{
 				const string textOfBadLabel = "Chinese";
 				var browserActions = UITestRunner.InitializeWorkFlowContainer(
-					b => b.Set(textOfBadLabel).To(CheckedState.Checked)
+					b => b.Set(textOfBadLabel).To(CheckedState.Checked.Value.ToString())
 					);
 
 				var exception = Assert.Throws<ShouldBeTrueAssertionException>(() => new IntegrationTestRunner().Run(
@@ -53,7 +51,7 @@ namespace decuit.Tests.Integration
 			{
 				const string textOfBadLabel = "Label without for";
 				var browserActions = UITestRunner.InitializeWorkFlowContainer(
-					b => b.Set(textOfBadLabel).To(CheckedState.Checked)
+					b => b.Set(textOfBadLabel).To(CheckedState.Checked.Value.ToString())
 					);
 
 				var exception = Assert.Throws<ShouldBeTrueAssertionException>(() => new IntegrationTestRunner().Run(
@@ -67,7 +65,7 @@ namespace decuit.Tests.Integration
 			{
 				const string textOfBadLabel = "Label with incorrect for";
 				var browserActions = UITestRunner.InitializeWorkFlowContainer(
-					b => b.Set(textOfBadLabel).To(CheckedState.Checked)
+					b => b.Set(textOfBadLabel).To(CheckedState.Checked.Value.ToString())
 					);
 
 				var exception = Assert.Throws<ShouldBeTrueAssertionException>(() => new IntegrationTestRunner().Run(
@@ -80,7 +78,7 @@ namespace decuit.Tests.Integration
 			public void Should_succeed_if_the_label_text_and_for_attribute_match_and_want_it_checked()
 			{
 				var browserActions = UITestRunner.InitializeWorkFlowContainer(
-					b => b.Set("English").To(CheckedState.Checked),
+					b => b.Set("English").To(CheckedState.Checked.Value.ToString()),
 					b => b.CheckBoxWithId("cbEnglish").CheckedState().ShouldBeTrue()
 					);
 
@@ -93,7 +91,7 @@ namespace decuit.Tests.Integration
 			public void Should_succeed_if_the_label_text_and_for_attribute_match_and_want_it_unchecked()
 			{
 				var browserActions = UITestRunner.InitializeWorkFlowContainer(
-					b => b.Set("Spanish").To(CheckedState.Unchecked),
+					b => b.Set("Spanish").To(CheckedState.Unchecked.Value.ToString()),
 					b => b.CheckBoxWithId("cbSpanish").CheckedState().ShouldBeFalse()
 					);
 

@@ -11,18 +11,28 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
+
+using System.Collections.Generic;
+
 namespace gar3t.decuit
 {
 	public class CheckedState
 	{
+		private static Dictionary<string,CheckedState> _checkedStates = new Dictionary<string, CheckedState>();
 		public static readonly CheckedState Checked = new CheckedState(true);
 		public static readonly CheckedState Unchecked = new CheckedState(false);
 
 		private CheckedState(bool value)
 		{
+			_checkedStates.Add(value.ToString(), this);
 			Value = value;
 		}
 
 		public bool Value { get; private set; }
+
+		public static CheckedState GetFor(string key)
+		{
+			return _checkedStates[key];
+		}
 	}
 }

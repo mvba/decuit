@@ -86,7 +86,7 @@
     <Compile Include="CheckedState.cs" />
     <Compile Include="InputSetter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SetExpression.cs" />
+    <Compile Include="SetByLabelExpression.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

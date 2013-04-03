@@ -18,9 +18,9 @@ namespace gar3t.decuit
 {
 	public static class BrowserExtensions
 	{
-		public static SetExpression Set(this IWebDriver b, string labelText)
+		public static SetByLabelExpression Set(this IWebDriver b, string labelText)
 		{
-			return new SetExpression(b, labelText);
+			return new SetByLabelExpression(b, labelText);
 		}
 	}
 }
