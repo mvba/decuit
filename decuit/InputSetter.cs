@@ -24,10 +24,11 @@ namespace gar3t.decuit
 			return control.Element != null && control.ToTextBoxWrapper().Element != null;
 		}
 
-		public void SetTo(ControlWrapperBase control, string value)
+		public WaitWrapper SetTo(ControlWrapperBase control, string value)
 		{
 			var textbox = control.ToTextBoxWrapper();
 			textbox.Text().SetValueTo(value);
+			return new WaitWrapper();
 		}
 	}
 
@@ -38,17 +39,17 @@ namespace gar3t.decuit
 			return control.Element != null && control.ToCheckBoxWrapper().Element != null;
 		}
 
-		public void SetTo(ControlWrapperBase control, string value)
+		public WaitWrapper SetTo(ControlWrapperBase control, string value)
 		{
 			var checkbox = control.ToCheckBoxWrapper();
-			checkbox.CheckedState().SetValueTo(CheckedState.GetFor(value).Value);
+			return checkbox.CheckedState().SetValueTo(CheckedState.GetFor(value).Value);
 		}
 	}
 
 	public interface IInputSetter
 	{
 		bool IsMatch(ControlWrapperBase control);
-		void SetTo(ControlWrapperBase control, string value);
+		WaitWrapper SetTo(ControlWrapperBase control, string value);
 	}
 
 	public class DropDownListSetter : IInputSetter
@@ -58,20 +59,18 @@ namespace gar3t.decuit
 			return control.Element != null && control.ToDropDownListWrapper().Element != null;
 		}
 
-		public void SetTo(ControlWrapperBase control, string value)
+		public WaitWrapper SetTo(ControlWrapperBase control, string value)
 		{
 			var dropDown = control.ToDropDownListWrapper();
 			var option = dropDown.OptionWithText(value);
 			if (option.Exists().IsTrue)
 			{
-				option.Select();
-				return;
+				return option.Select();
 			}
 			option = dropDown.OptionWithValue(value);
 			if (option.Exists().IsTrue)
 			{
-				option.Select();
-				return;
+				return option.Select();
 			}
 			throw new AssertionException(String.Format("{0} does not have option '{1}'", control.HowFound, value));
 		}

@@ -19,6 +19,7 @@ using System.Linq;
 using FluentAssert;
 
 using FluentWebUITesting.Controls;
+using FluentWebUITesting.Extensions;
 
 using OpenQA.Selenium;
 
@@ -54,7 +55,7 @@ namespace gar3t.decuit
 
 		public abstract ControlWrapperBase Control { get; }
 
-		public void To(string text)
+		public WaitWrapper To(string text)
 		{
 			var control = Control;
 			control.Exists().ShouldBeTrue();
@@ -65,7 +66,7 @@ namespace gar3t.decuit
 			{
 				throw new ArgumentOutOfRangeException("text", String.Format("There is no configured InputSetter for {0} ", control.HowFound));
 			}
-			setter.SetTo(control, text);
+			return setter.SetTo(control, text);
 		}
 
 	}
@@ -102,11 +103,13 @@ namespace gar3t.decuit
 
 		private string GetItsLinkedControlId()
 		{
-			var labels = Browser.FindElements(By.TagName("label"));
-			var label = new LabelWrapper(labels.FirstOrDefault(x => x.Text.Trim() == LabelText.Trim()), "With text '" + LabelText.Trim() + "'", Browser);
-			label.Exists().ShouldBeTrue(String.Format("Could not find Label with text '{0}'", LabelText));
+			var labels = Browser.Labels();
+			var label = labels.FirstOrDefault(x => x.Text().GetValue().Trim() == LabelText.Trim());
+			label.ShouldNotBeNull(String.Format("Could not find Label with text '{0}'", LabelText.Trim()));
 
+//// ReSharper disable PossibleNullReferenceException
 			string itsLinkedControlId = label.For;
+//// ReSharper restore PossibleNullReferenceException
 			itsLinkedControlId.ShouldNotBeNullOrEmpty(String.Format("Label with text '{0}' does not have a For attribute", LabelText));
 			return itsLinkedControlId;
 		}
