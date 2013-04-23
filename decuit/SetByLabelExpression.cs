@@ -13,7 +13,6 @@
 //    limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using FluentAssert;
@@ -25,72 +24,6 @@ using OpenQA.Selenium;
 
 namespace gar3t.decuit
 {
-	public static class SetterFor
-	{
-		public static SetByLabelExpression ControlWithLabel(IWebDriver browser, string labelText)
-		{
-			return new SetByLabelExpression(browser, labelText);
-		}
-
-		public static SetByIdExpression ControlWithId(IWebDriver browser, string id)
-		{
-			return new SetByIdExpression(browser, id);
-		}
-	}
-
-	public abstract class SetExpression
-	{
-		protected IWebDriver Browser { get; private set; }
-		private static readonly List<IInputSetter> _setters = new List<IInputSetter>
-		{
-			new TextBoxSetter(),
-			new CheckBoxSetter(),
-			new DropDownListSetter()
-		};
-
-		protected SetExpression(IWebDriver browser)
-		{
-			Browser = browser;
-		}
-
-		public abstract ControlWrapperBase Control { get; }
-
-		public WaitWrapper To(string text)
-		{
-			var control = Control;
-			control.Exists().ShouldBeTrue();
-			control.Enabled().ShouldBeTrue();
-
-			var setter = _setters.FirstOrDefault(x => x.IsMatch(control));
-			if (setter == null)
-			{
-				throw new ArgumentOutOfRangeException("text", String.Format("There is no configured InputSetter for {0} ", control.HowFound));
-			}
-			return setter.SetTo(control, text);
-		}
-
-	}
-
-	public class SetByIdExpression : SetExpression
-	{
-		public string Id { get; private set; }
-
-		public SetByIdExpression(IWebDriver browser, string id)
-			: base(browser)
-		{
-			Id = id;
-		}
-
-		public override ControlWrapperBase Control
-		{
-			get
-			{
-				var control = Browser.FindElements(By.Id(Id)).FirstOrDefault();
-				return new ControlWrapperBase(control, String.Format("Control with id '{0}'", Id), Browser);
-			}
-		}
-	}
-
 	public class SetByLabelExpression : SetExpression
 	{
 		public SetByLabelExpression(IWebDriver browser, string labelText)
@@ -123,7 +56,5 @@ namespace gar3t.decuit
 				return new ControlWrapperBase(control, "Control with id '" + itsLinkedControlId + "' as referenced in For attribute of Label with text '" + LabelText+"'", Browser);
 			}
 		}
-
-
 	}
 }
