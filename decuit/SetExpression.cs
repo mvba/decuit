@@ -30,7 +30,7 @@ namespace gar3t.decuit
 			                                                      new TextBoxSetter(),
 			                                                      new CheckBoxSetter(),
 			                                                      new DropDownListSetter(),
-																 // new RadioButtonOptionSetter()
+																  new RadioButtonOptionSetter()
 		                                                      };
 
 		protected SetExpression(IWebDriver browser)
